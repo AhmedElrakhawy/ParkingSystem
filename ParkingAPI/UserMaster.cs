@@ -17,6 +17,7 @@ namespace ParkingAPI
         public UserMaster()
         {
             this.VerificationOTPs = new HashSet<VerificationOTP>();
+            this.ApiTokens = new HashSet<ApiToken>();
         }
     
         public int UserId { get; set; }
@@ -28,5 +29,6 @@ namespace ParkingAPI
         public string UserName { get; set; }
     
         public virtual ICollection<VerificationOTP> VerificationOTPs { get; set; }
+        public virtual ICollection<ApiToken> ApiTokens { get; set; }
     }
 }

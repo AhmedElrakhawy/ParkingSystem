@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ParkingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ApiToken">
+          <Key>
+            <PropertyRef Name="TokenId" />
+          </Key>
+          <Property Name="TokenId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="authToken" Type="nvarchar" MaxLength="100" />
+          <Property Name="IssuedOn" Type="nvarchar" MaxLength="100" />
+          <Property Name="ExpiresOn" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="UserMaster">
           <Key>
             <PropertyRef Name="UserId" />
@@ -28,6 +38,18 @@
           <Property Name="UserId" Type="int" />
           <Property Name="OTP" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK__ApiToken__UserId__239E4DCF">
+          <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="0..1" />
+          <End Role="ApiToken" Type="Self.ApiToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMaster">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ApiToken">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Verificat__UserI__1273C1CD">
           <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="0..1" />
           <End Role="VerificationOTP" Type="Self.VerificationOTP" Multiplicity="*" />
@@ -41,8 +63,13 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ParkingSystemModelStoreContainer">
+          <EntitySet Name="ApiToken" EntityType="Self.ApiToken" Schema="Common" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="Common" store:Type="Tables" />
           <EntitySet Name="VerificationOTP" EntityType="Self.VerificationOTP" Schema="Common" store:Type="Tables" />
+          <AssociationSet Name="FK__ApiToken__UserId__239E4DCF" Association="Self.FK__ApiToken__UserId__239E4DCF">
+            <End Role="UserMaster" EntitySet="UserMaster" />
+            <End Role="ApiToken" EntitySet="ApiToken" />
+          </AssociationSet>
           <AssociationSet Name="FK__Verificat__UserI__1273C1CD" Association="Self.FK__Verificat__UserI__1273C1CD">
             <End Role="UserMaster" EntitySet="UserMaster" />
             <End Role="VerificationOTP" EntitySet="VerificationOTP" />
@@ -64,6 +91,7 @@
           <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApiTokens" Relationship="ParkingSystemModel.FK__ApiToken__UserId__239E4DCF" FromRole="UserMaster" ToRole="ApiToken" />
         </EntityType>
         <EntityType Name="VerificationOTP">
           <Key>
@@ -96,7 +124,35 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="VerificationOTP" EntitySet="VerificationOTPs" />
           </AssociationSet>
+          <EntitySet Name="ApiTokens" EntityType="ParkingSystemModel.ApiToken" />
+          <AssociationSet Name="FK__ApiToken__UserId__239E4DCF" Association="ParkingSystemModel.FK__ApiToken__UserId__239E4DCF">
+            <End Role="UserMaster" EntitySet="UserMasters" />
+            <End Role="ApiToken" EntitySet="ApiTokens" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ApiToken">
+          <Key>
+            <PropertyRef Name="TokenId" />
+          </Key>
+          <Property Name="TokenId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="authToken" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IssuedOn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiresOn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserMaster" Relationship="ParkingSystemModel.FK__ApiToken__UserId__239E4DCF" FromRole="ApiToken" ToRole="UserMaster" />
+        </EntityType>
+        <Association Name="FK__ApiToken__UserId__239E4DCF">
+          <End Type="ParkingSystemModel.UserMaster" Role="UserMaster" Multiplicity="0..1" />
+          <End Type="ParkingSystemModel.ApiToken" Role="ApiToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMaster">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ApiToken">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -125,6 +181,17 @@
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="OTPExpDateTime" ColumnName="OTPExpDateTime" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApiTokens">
+            <EntityTypeMapping TypeName="ParkingSystemModel.ApiToken">
+              <MappingFragment StoreEntitySet="ApiToken">
+                <ScalarProperty Name="ExpiresOn" ColumnName="ExpiresOn" />
+                <ScalarProperty Name="IssuedOn" ColumnName="IssuedOn" />
+                <ScalarProperty Name="authToken" ColumnName="authToken" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TokenId" ColumnName="TokenId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
