@@ -17,7 +17,7 @@ namespace ParkingAPI.Security
         {
             ITokenService Tokenservice = new TokenService();
 
-            if (actionContext.Request.Headers.Contains(Token))
+            if (actionContext.Request.Headers.Contains(Token)) 
             {
                 var TokenValue = actionContext.Request.Headers.GetValues(Token).First();
                 if (Tokenservice != null && !Tokenservice.ValidateToken(Guid.Parse(TokenValue)))

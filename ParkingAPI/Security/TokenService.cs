@@ -19,7 +19,7 @@ namespace ParkingAPI.Security
                 {
                     UserId = userId,
                     ExpiresOn = ExpiredOn.ToString(),
-                    IssuedOn = IssuedOn.ToString(),
+                    IssuedOn = IssuedOn.ToString(), 
                     authToken = uniqueKkey.ToString()
                 };
                 context.ApiTokens.Add(Token);

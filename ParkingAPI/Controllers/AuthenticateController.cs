@@ -21,7 +21,7 @@ namespace ParkingAPI.Controllers
 
                 if (basicAuthenticationIdentity != null)
                 {
-                    var userId = basicAuthenticationIdentity.UserId;
+                    var userId = basicAuthenticationIdentity.UserId; 
                     return GetAuthToken(userId);
                 }
             }

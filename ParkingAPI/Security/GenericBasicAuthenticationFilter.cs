@@ -89,7 +89,7 @@ namespace ParkingAPI.Security
                     ResponseMessageAr = "فشل تسجيل الدخول"
                 });
             }
-            actionContext.Response.Headers.Add("www-Authenticate", string.Format("Basic realm=\"{0}\"", host));
+            actionContext.Response.Headers.Add("www-Authenticate", string.Format("Basic realm=\"{0}\"", host)); 
 
         }
         protected virtual bool onAuthorizeUser(string UserName, string Password, HttpActionContext actionContext, out bool isActive)

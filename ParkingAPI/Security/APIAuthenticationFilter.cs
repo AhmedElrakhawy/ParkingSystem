@@ -32,7 +32,7 @@ namespace ParkingAPI.Security
                         basicAuthenticationIdentity.UserId = userId;
                         return true;
                     }
-                    else if (userId == -1)
+                    else if (userId == -1) 
                     {
                         isActive = false;
                         return true;

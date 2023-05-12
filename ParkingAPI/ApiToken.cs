@@ -12,7 +12,7 @@ namespace ParkingAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class ApiToken
+    public partial class ApiToken 
     {
         public ApiToken()
         {

@@ -14,7 +14,7 @@ namespace ParkingAPI
     
     public partial class ExceptionLog
     {
-        public int ExceptionId { get; set; }
+        public int ExceptionId { get; set; } 
         public string Message { get; set; }
         public string Source { get; set; }
         public string StackTrace { get; set; }

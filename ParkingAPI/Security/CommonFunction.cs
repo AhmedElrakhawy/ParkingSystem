@@ -24,7 +24,7 @@ namespace ParkingAPI.Security
 
                     DbContext.ExceptionLogs.Add(objException);
                     DbContext.SaveChanges();
-                }
+                } 
             }
             catch (Exception)
             {

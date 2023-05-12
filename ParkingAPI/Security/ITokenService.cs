@@ -10,6 +10,6 @@ namespace ParkingAPI.Security
     {
         ApiToken GenerateToken(int userId);
         bool ValidateToken(Guid TokenId);
-        bool KillToken(int userId);
+        bool KillToken(int userId); 
     }
 }
