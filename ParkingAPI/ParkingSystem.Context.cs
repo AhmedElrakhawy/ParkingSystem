@@ -28,5 +28,7 @@ namespace ParkingAPI
         public DbSet<UserMaster> UserMasters { get; set; }
         public DbSet<VerificationOTP> VerificationOTPs { get; set; }
         public DbSet<ApiToken> ApiTokens { get; set; }
+        public DbSet<APIUser> APIUsers { get; set; }
+        public DbSet<ExceptionLog> ExceptionLogs { get; set; }
     }
 }

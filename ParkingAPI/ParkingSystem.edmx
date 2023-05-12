@@ -15,6 +15,16 @@
           <Property Name="IssuedOn" Type="nvarchar" MaxLength="100" />
           <Property Name="ExpiresOn" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="ExceptionLog">
+          <Key>
+            <PropertyRef Name="ExceptionId" />
+          </Key>
+          <Property Name="ExceptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="150" />
+          <Property Name="Source" Type="nvarchar" MaxLength="100" />
+          <Property Name="StackTrace" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreatedDate" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="UserMaster">
           <Key>
             <PropertyRef Name="UserId" />
@@ -38,6 +48,22 @@
           <Property Name="UserId" Type="int" />
           <Property Name="OTP" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="APIUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" />
+          <Property Name="createdBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="createdDate" Type="nvarchar" MaxLength="100" />
+          <Property Name="VerificationOTPId" Type="int" />
+          <Property Name="APITokenId" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
         <Association Name="FK__ApiToken__UserId__239E4DCF">
           <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="0..1" />
           <End Role="ApiToken" Type="Self.ApiToken" Multiplicity="*" />
@@ -47,6 +73,30 @@
             </Principal>
             <Dependent Role="ApiToken">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__APIUser__APIToke__37A5467C">
+          <End Role="ApiToken" Type="Self.ApiToken" Multiplicity="0..1" />
+          <End Role="APIUser" Type="Self.APIUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApiToken">
+              <PropertyRef Name="TokenId" />
+            </Principal>
+            <Dependent Role="APIUser">
+              <PropertyRef Name="APITokenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__APIUser__Verific__36B12243">
+          <End Role="VerificationOTP" Type="Self.VerificationOTP" Multiplicity="0..1" />
+          <End Role="APIUser" Type="Self.APIUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VerificationOTP">
+              <PropertyRef Name="VerificationOTPId" />
+            </Principal>
+            <Dependent Role="APIUser">
+              <PropertyRef Name="VerificationOTPId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -64,11 +114,21 @@
         </Association>
         <EntityContainer Name="ParkingSystemModelStoreContainer">
           <EntitySet Name="ApiToken" EntityType="Self.ApiToken" Schema="Common" store:Type="Tables" />
+          <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="Common" store:Type="Tables" />
           <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="Common" store:Type="Tables" />
           <EntitySet Name="VerificationOTP" EntityType="Self.VerificationOTP" Schema="Common" store:Type="Tables" />
+          <EntitySet Name="APIUser" EntityType="Self.APIUser" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__ApiToken__UserId__239E4DCF" Association="Self.FK__ApiToken__UserId__239E4DCF">
             <End Role="UserMaster" EntitySet="UserMaster" />
             <End Role="ApiToken" EntitySet="ApiToken" />
+          </AssociationSet>
+          <AssociationSet Name="FK__APIUser__APIToke__37A5467C" Association="Self.FK__APIUser__APIToke__37A5467C">
+            <End Role="ApiToken" EntitySet="ApiToken" />
+            <End Role="APIUser" EntitySet="APIUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__APIUser__Verific__36B12243" Association="Self.FK__APIUser__Verific__36B12243">
+            <End Role="VerificationOTP" EntitySet="VerificationOTP" />
+            <End Role="APIUser" EntitySet="APIUser" />
           </AssociationSet>
           <AssociationSet Name="FK__Verificat__UserI__1273C1CD" Association="Self.FK__Verificat__UserI__1273C1CD">
             <End Role="UserMaster" EntitySet="UserMaster" />
@@ -104,6 +164,7 @@
           <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="UserMaster" Relationship="Self.FK__Verificat__UserI__1273C1CD" FromRole="VerificationOTP" ToRole="UserMaster" />
           <Property Name="OTP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="APIUsers" Relationship="ParkingSystemModel.FK__APIUser__Verific__36B12243" FromRole="VerificationOTP" ToRole="APIUser" />
         </EntityType>
         <Association Name="FK__Verificat__UserI__1273C1CD">
           <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="0..1" />
@@ -129,6 +190,16 @@
             <End Role="UserMaster" EntitySet="UserMasters" />
             <End Role="ApiToken" EntitySet="ApiTokens" />
           </AssociationSet>
+          <EntitySet Name="APIUsers" EntityType="ParkingSystemModel.APIUser" />
+          <AssociationSet Name="FK__APIUser__APIToke__37A5467C" Association="ParkingSystemModel.FK__APIUser__APIToke__37A5467C">
+            <End Role="ApiToken" EntitySet="ApiTokens" />
+            <End Role="APIUser" EntitySet="APIUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__APIUser__Verific__36B12243" Association="ParkingSystemModel.FK__APIUser__Verific__36B12243">
+            <End Role="VerificationOTP" EntitySet="VerificationOTPs" />
+            <End Role="APIUser" EntitySet="APIUsers" />
+          </AssociationSet>
+          <EntitySet Name="ExceptionLogs" EntityType="ParkingSystemModel.ExceptionLog" />
         </EntityContainer>
         <EntityType Name="ApiToken">
           <Key>
@@ -140,6 +211,7 @@
           <Property Name="IssuedOn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ExpiresOn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserMaster" Relationship="ParkingSystemModel.FK__ApiToken__UserId__239E4DCF" FromRole="ApiToken" ToRole="UserMaster" />
+          <NavigationProperty Name="APIUsers" Relationship="ParkingSystemModel.FK__APIUser__APIToke__37A5467C" FromRole="ApiToken" ToRole="APIUser" />
         </EntityType>
         <Association Name="FK__ApiToken__UserId__239E4DCF">
           <End Type="ParkingSystemModel.UserMaster" Role="UserMaster" Multiplicity="0..1" />
@@ -153,6 +225,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="APIUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="createdBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="createdDate" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VerificationOTPId" Type="Int32" />
+          <Property Name="APITokenId" Type="Int32" />
+          <NavigationProperty Name="ApiToken" Relationship="ParkingSystemModel.FK__APIUser__APIToke__37A5467C" FromRole="APIUser" ToRole="ApiToken" />
+          <NavigationProperty Name="VerificationOTP" Relationship="ParkingSystemModel.FK__APIUser__Verific__36B12243" FromRole="APIUser" ToRole="VerificationOTP" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK__APIUser__APIToke__37A5467C">
+          <End Type="ParkingSystemModel.ApiToken" Role="ApiToken" Multiplicity="0..1" />
+          <End Type="ParkingSystemModel.APIUser" Role="APIUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApiToken">
+              <PropertyRef Name="TokenId" />
+            </Principal>
+            <Dependent Role="APIUser">
+              <PropertyRef Name="APITokenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__APIUser__Verific__36B12243">
+          <End Type="ParkingSystemModel.VerificationOTP" Role="VerificationOTP" Multiplicity="0..1" />
+          <End Type="ParkingSystemModel.APIUser" Role="APIUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VerificationOTP">
+              <PropertyRef Name="VerificationOTPId" />
+            </Principal>
+            <Dependent Role="APIUser">
+              <PropertyRef Name="VerificationOTPId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ExceptionLog">
+          <Key>
+            <PropertyRef Name="ExceptionId" />
+          </Key>
+          <Property Name="ExceptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Message" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Source" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StackTrace" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -192,6 +316,34 @@
                 <ScalarProperty Name="authToken" ColumnName="authToken" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="TokenId" ColumnName="TokenId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APIUsers">
+            <EntityTypeMapping TypeName="ParkingSystemModel.APIUser">
+              <MappingFragment StoreEntitySet="APIUser">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="APITokenId" ColumnName="APITokenId" />
+                <ScalarProperty Name="VerificationOTPId" ColumnName="VerificationOTPId" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExceptionLogs">
+            <EntityTypeMapping TypeName="ParkingSystemModel.ExceptionLog">
+              <MappingFragment StoreEntitySet="ExceptionLog">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="ExceptionId" ColumnName="ExceptionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

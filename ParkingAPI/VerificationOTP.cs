@@ -14,6 +14,11 @@ namespace ParkingAPI
     
     public partial class VerificationOTP
     {
+        public VerificationOTP()
+        {
+            this.APIUsers = new HashSet<APIUser>();
+        }
+    
         public int VerificationOTPId { get; set; }
         public string username { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
@@ -22,5 +27,6 @@ namespace ParkingAPI
         public string OTP { get; set; }
     
         public virtual UserMaster UserMaster { get; set; }
+        public virtual ICollection<APIUser> APIUsers { get; set; }
     }
 }

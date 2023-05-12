@@ -10,6 +10,10 @@
         <AssociationConnector Association="ParkingSystemModel.FK__Verificat__UserI__1273C1CD" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ParkingSystemModel.ApiToken" Width="1.5" PointX="3" PointY="4.25" />
         <AssociationConnector Association="ParkingSystemModel.FK__ApiToken__UserId__239E4DCF" />
+        <EntityTypeShape EntityType="ParkingSystemModel.APIUser" Width="1.5" PointX="5.375" PointY="0.75" />
+        <AssociationConnector Association="ParkingSystemModel.FK__APIUser__APIToke__37A5467C" />
+        <AssociationConnector Association="ParkingSystemModel.FK__APIUser__Verific__36B12243" />
+        <EntityTypeShape EntityType="ParkingSystemModel.ExceptionLog" Width="1.5" PointX="5.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

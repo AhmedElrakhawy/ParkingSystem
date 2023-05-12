@@ -33,12 +33,44 @@ namespace ParkingAPI.Security
 
         public bool KillToken(int userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var Context = new ParkingSystemEntities())
+                {
+                    var token = Context.ApiTokens.FirstOrDefault(x => x.UserId == userId);
+
+                    Context.Entry(token).State = System.Data.EntityState.Deleted;
+
+                    if (Context.SaveChanges() > 0)
+                        return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return false;
         }
 
         public bool ValidateToken(Guid TokenId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var Context = new ParkingSystemEntities())
+                {
+                    var token = Context.ApiTokens.FirstOrDefault(x => x.TokenId == int.Parse(TokenId.ToString()));
+
+                    if (token != null && DateTime.Parse(token.ExpiresOn) > DateTime.Now)
+                        return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return false;
         }
     }
 }

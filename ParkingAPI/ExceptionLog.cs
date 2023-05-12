@@ -12,20 +12,12 @@ namespace ParkingAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class ApiToken
+    public partial class ExceptionLog
     {
-        public ApiToken()
-        {
-            this.APIUsers = new HashSet<APIUser>();
-        }
-    
-        public int TokenId { get; set; }
-        public Nullable<int> UserId { get; set; }
-        public string authToken { get; set; }
-        public string IssuedOn { get; set; }
-        public string ExpiresOn { get; set; }
-    
-        public virtual UserMaster UserMaster { get; set; }
-        public virtual ICollection<APIUser> APIUsers { get; set; }
+        public int ExceptionId { get; set; }
+        public string Message { get; set; }
+        public string Source { get; set; }
+        public string StackTrace { get; set; }
+        public string CreatedDate { get; set; }
     }
 }
