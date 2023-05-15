@@ -9,6 +9,28 @@ namespace ParkingAPI.Security
 {
     public class CommonFunction
     {
+        public static void LogException(string Controller , string Action , string ExceptionMessage ,
+            string FullException , string Description , string SessionId , string TerminalId)
+        {
+            try
+            {
+                using (var DbContext = new ParkingSystemEntities())
+                {
+                    ExceptionLog objException = new ExceptionLog();
+                    objException.Message = ExceptionMessage;
+                    objException.Source = FullException;
+                    objException.StackTrace = Controller + "=>" + Action;
+                    objException.CreatedDate = DateTime.Now.ToString();
+
+                    DbContext.ExceptionLogs.Add(objException);
+                    DbContext.SaveChanges();
+                } 
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public static bool SendEmail (string body , string receiver , string subject)
         {
             try
@@ -57,7 +79,7 @@ namespace ParkingAPI.Security
             catch (Exception)
             {
 
-                throw;
+                return string.Empty;
             }
         }
     }

@@ -12,23 +12,21 @@ namespace ParkingAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class UserMaster
+    public partial class APIUser
     {
-        public UserMaster()
-        {
-            this.VerificationOTPs = new HashSet<VerificationOTP>();
-            this.ApiTokens = new HashSet<ApiToken>();
-        }
-    
         public int UserId { get; set; }
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } 
         public string LastName { get; set; }
-        public Nullable<int> Age { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
         public string UserName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string createdBy { get; set; }
+        public string createdDate { get; set; }
+        public Nullable<int> VerificationOTPId { get; set; }
+        public Nullable<int> APITokenId { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
-        public virtual ICollection<VerificationOTP> VerificationOTPs { get; set; }
-        public virtual ICollection<ApiToken> ApiTokens { get; set; }
+        public virtual ApiToken ApiToken { get; set; }
+        public virtual VerificationOTP VerificationOTP { get; set; }
     }
 }

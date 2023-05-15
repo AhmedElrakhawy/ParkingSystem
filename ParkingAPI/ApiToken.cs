@@ -12,19 +12,18 @@ namespace ParkingAPI
     using System;
     using System.Collections.Generic;
     
-    public partial class VerificationOTP
+    public partial class ApiToken 
     {
-        public VerificationOTP()
+        public ApiToken()
         {
             this.APIUsers = new HashSet<APIUser>();
         }
     
-        public int VerificationOTPId { get; set; }
-        public string username { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
-        public Nullable<System.DateTime> OTPExpDateTime { get; set; }
+        public int TokenId { get; set; }
         public Nullable<int> UserId { get; set; }
-        public string OTP { get; set; }
+        public string authToken { get; set; }
+        public string IssuedOn { get; set; }
+        public string ExpiresOn { get; set; }
     
         public virtual UserMaster UserMaster { get; set; }
         public virtual ICollection<APIUser> APIUsers { get; set; }

@@ -177,6 +177,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Security\CustomAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="App_GlobalResources\Parking.ar.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -227,7 +228,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="NewFolder1\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>

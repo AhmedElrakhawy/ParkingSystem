@@ -100,8 +100,9 @@ namespace ParkingAPI.Controllers
                     }
                     if (DbContext.SaveChanges() > 0)
                     {
-                        Htmlbody2.Replace("userName", UserName);
-                        Htmlbody2.Replace("otp", OTP.ToString());
+                        Htmlbody2.Replace("{UserName}", UserName);
+                        Htmlbody2.Replace("{Title}", "Ur OTP is");
+                        Htmlbody2.Replace("{userOTP}", OTP.ToString());
                         CommonFunction.SendEmail(Htmlbody2, ContactEmail, "OTP Verification");
                         return true;
                     }
